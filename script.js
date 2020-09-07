@@ -54,6 +54,7 @@ window.onload = function()
     function gameOver()
     {
         ctx.save();
+        ctx.fillText("Game Over", 5, 15);
         ctx.restore();
     }
 
