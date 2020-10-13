@@ -1,7 +1,6 @@
-window.onload = function()
-{
+window.onload = function(){
     var canvasWidth = 900;
-    var canvasHeight = 600;
+    var canvasHeight = 500;
     var ctx;
     var blockSize = 20;
     var delay = 100;
@@ -9,25 +8,29 @@ window.onload = function()
     var applee;
     var widtInBlocks = canvasWidth/blockSize;
     var heightInBlocks = canvasHeight/blockSize;
+    var score;
+    var timeout;
 
     init()
 
-    function  init()
-    {
+    function  init(){
         var canvas = document.createElement('canvas');
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
-        canvas.style.border = "1px solid";
+        canvas.style.border = "30px solid gray";
+        canvas.style.margin = "50px auto";
+        canvas.style.display = "block";
+        canvas.style.backgroundColor = "#ddd";
         document.body.appendChild(canvas);
         ctx = canvas.getContext('2d');
         snakee = new Snake([[6,4], [5,4], [4,4]], "right");
-        applee = new Apple([4,3])
+        applee = new Apple([4,3]);
+        score = 0;
         refreshCanvas();
     
     }
 
-    function refreshCanvas()
-    {  
+    function refreshCanvas(){  
         snakee.advance();
         if(snakee.checkCollision())
         {
@@ -38,6 +41,7 @@ window.onload = function()
        {
            if(snakee.isEatingApple(applee))
            {
+               score++;
                snakee.ateApple = true;
                 do
                 {
@@ -46,28 +50,61 @@ window.onload = function()
                 while(applee.verifyPosition(snakee))
            }
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            drawScore();
             snakee.draw();
             applee.draw();
-            setTimeout(refreshCanvas, delay);
+            timeout = setTimeout(refreshCanvas, delay);
         }
     }
-    function gameOver()
-    {
+    function gameOver(){
         ctx.save();
-        ctx.fillText("Game Over", 5, 15);
+        ctx.font = "bold 30px san-serif";
+        ctx.fillStyle = "#000";
+        ctx.textAlign = "center";
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        var centerX = canvasWidth / 2;
+        var centerY = canvasHeight / 2;
+        ctx.textBaseline = "middle";
+        ctx.fillText("Game Over", centerX, centerY - 100);
+        ctx.strokeText("Game Over", centerX, centerY - 100);
+        ctx.fillText("Your score : ", centerX, centerY - 65);
+        ctx.strokeText("Your score : ", centerX, centerY - 65);
+        ctx.fillText("Press Space to replay", centerX, centerY + 50);
+        ctx.strokeText("Press Space to replay", centerX, centerY + 50);
         ctx.restore();
     }
 
-    function drawBlock(ctx, position)
-    {
+    function restart(){
+        var list = ["left", "up", "right", "down"]
+        snakee = new Snake([[6,4], [5,4], [4,4]], "right");
+        applee = new Apple([Math.round(Math.random() * 15),Math.round(Math.random() * 10)])
+        refreshCanvas();
+        clearTimeout(timeout);
+        score = 0;
+    
+    }
+
+    function drawScore(){
+        ctx.save();
+        ctx.font = "bold 100px san-serif";
+        ctx.fillStyle = "gray";
+        ctx.textAlign = "center";
+        var centerX = canvasWidth / 2;
+        var centerY = canvasHeight / 2;
+        ctx.textBaseline = "middle"; 
+        ctx.fillText(score.toString(), centerX, centerY);
+        ctx.restore();
+    }
+
+    function drawBlock(ctx, position){
         var x = position[0] * blockSize;
         var y = position[1] * blockSize;
         ctx.fillRect(x, y, blockSize, blockSize);
 
     }
 
-    function Snake(body, direction)
-    {
+    function Snake(body, direction){
         this.body = body;
         this.direction = direction;
         this.ateApple = false;
@@ -82,8 +119,7 @@ window.onload = function()
             ctx.restore();
 
         };
-        this.advance = function()
-        {
+        this.advance = function(){
             var nextPosition = this.body[0].slice();
             switch(this.direction)
             {
@@ -108,8 +144,7 @@ window.onload = function()
             else
                 this.ateApple = false;
         };
-        this.setDirection = function(newDirection)
-        {
+        this.setDirection = function(newDirection){
             var allowedDirections;
             switch(this.direction)
             {
@@ -129,8 +164,7 @@ window.onload = function()
                 this.direction = newDirection;
             }
         };
-        this.checkCollision = function ()
-        {
+        this.checkCollision = function (){
             var wallCollision = false;
             var snakeCollision = false;
             var head = this.body[0];
@@ -155,8 +189,7 @@ window.onload = function()
             }
             return wallCollision || snakeCollision;
         };
-        this.isEatingApple = function(appleTopEat)
-        {
+        this.isEatingApple = function(appleTopEat){
             var head = this.body[0];
             if(head[0] === appleTopEat.position[0] && head[1] === appleTopEat.position[1])
                 return true;
@@ -164,8 +197,7 @@ window.onload = function()
         };
     }
 
-    function Apple(position)
-    {
+    function Apple(position){
         this.position = position;
         this.draw = function()
         {
@@ -179,14 +211,12 @@ window.onload = function()
             ctx.fill();
             ctx.restore();
         };
-        this.setNewPosition = function()
-        {
+        this.setNewPosition = function(){
             var newX = Math.round(Math.random() * (widtInBlocks - 1));
             var newY = Math.round(Math.random() * (heightInBlocks - 1));
             this.position = [newX, newY];
         };
-        this.verifyPosition = function(snake)
-        {
+        this.verifyPosition = function(snake){
             var isOnSnake = false;
             for (var i = 0; i < snake.body.length; i++)
             {
@@ -199,12 +229,10 @@ window.onload = function()
         };
     }
 
-    document.onkeydown = function handleKeyDown(e)
-    {
+    document.onkeydown = function handleKeyDown(e){
     var key = e.keyCode;
     var newDirection;
-    switch(key)
-    {
+    switch(key){
         case 37:
             newDirection = "left";
             break;
@@ -217,6 +245,9 @@ window.onload = function()
         case 40:
             newDirection = "down";
             break;
+        case 32:
+            restart();
+            return;
         default:
             return;
     }
