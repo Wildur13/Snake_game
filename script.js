@@ -1,4 +1,5 @@
 window.onload = function(){
+    alert("Welcome to the Snake Game. To play please press 'OK'")
     var canvasWidth = 900;
     var canvasHeight = 500;
     var ctx;
@@ -17,7 +18,8 @@ window.onload = function(){
         var canvas = document.createElement('canvas');
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
-        canvas.style.border = "30px solid gray";
+        canvas.style.border = "30px solid rgb(33, 83, 33)";
+        canvas.style.borderRadius = "30px "
         canvas.style.margin = "50px auto";
         canvas.style.display = "block";
         canvas.style.backgroundColor = "#ddd";
@@ -42,6 +44,9 @@ window.onload = function(){
            if(snakee.isEatingApple(applee))
            {
                score++;
+               if (score % 5 == 0) {
+                   delay = delay/1.2;
+               }
                snakee.ateApple = true;
                 do
                 {
@@ -76,11 +81,11 @@ window.onload = function(){
     }
 
     function restart(){
-        var list = ["left", "up", "right", "down"]
         snakee = new Snake([[6,4], [5,4], [4,4]], "right");
         applee = new Apple([Math.round(Math.random() * 15),Math.round(Math.random() * 10)])
-        refreshCanvas();
         clearTimeout(timeout);
+        delay = 100;
+        refreshCanvas();
         score = 0;
     
     }
