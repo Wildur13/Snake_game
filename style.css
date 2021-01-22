@@ -1,0 +1,44 @@
+.btn{
+    height: 200px;
+    width: 200px;
+    margin: auto auto;
+}
+
+.btn .btn1{
+    height: 40px;
+    width: 200px;
+    margin-top: 20px;
+}
+
+.btn .btn1 .left{
+    float: left;
+    margin-right: 40px;
+}
+
+.btn .btn1 .rigth{
+    float: right;
+    margin-left: 40px;
+}
+
+.btn .btn2{
+    height: 200px;
+    width: 40px;
+    margin-top: -85px;
+    margin-left: 40px;
+}
+
+.btn .btn2 .up{
+    margin-top: 0px;
+    margin-bottom: 50px;
+}
+
+.btn .btn2 .down{
+    margin-bottom: 0px;
+    margin-top: 50px;
+}
+
+.btn input {
+    height: 40px;
+    width: 40px;
+    text-align: center;
+}

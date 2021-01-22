@@ -1,5 +1,5 @@
 window.onload = function(){
-    alert("Welcome to the Snake Game. To play please press 'OK'")
+    //alert("Welcome to the Snake Game. To play please press 'OK'");
     var canvasWidth = 900;
     var canvasHeight = 500;
     var ctx;
@@ -81,6 +81,7 @@ window.onload = function(){
     }
 
     function restart(){
+        dir = ["left", "right", "up", "down"];
         snakee = new Snake([[6,4], [5,4], [4,4]], "right");
         applee = new Apple([Math.round(Math.random() * 15),Math.round(Math.random() * 10)])
         clearTimeout(timeout);
@@ -239,15 +240,19 @@ window.onload = function(){
     var newDirection;
     switch(key){
         case 37:
+        case l.onclick:
             newDirection = "left";
             break;
         case 38:
+        case u.onclick:
             newDirection = "up";
             break;
         case 39:
+        case r.onclick:
             newDirection = "right";
             break;
         case 40:
+        case d.onclick:
             newDirection = "down";
             break;
         case 32:
