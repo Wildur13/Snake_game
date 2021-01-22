@@ -240,19 +240,15 @@ window.onload = function(){
     var newDirection;
     switch(key){
         case 37:
-        case l.onclick:
             newDirection = "left";
             break;
         case 38:
-        case u.onclick:
             newDirection = "up";
             break;
         case 39:
-        case r.onclick:
             newDirection = "right";
             break;
         case 40:
-        case d.onclick:
             newDirection = "down";
             break;
         case 32:
